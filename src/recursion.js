@@ -73,6 +73,22 @@ var sumBelow = function(n) {
 // 6. Get the integers within a range (x, y).
 // range(2,9); // [3,4,5,6,7,8]
 var range = function(x, y) {
+  var result = [];
+	if(x === y){
+		return result;
+	}
+	while(x !== y){
+		if(x > y){
+			x--;
+			result.push(x);
+			range(x, y);
+		} else if(x < y){
+			x++;
+			result.push(x);
+			range(x, y);
+		}
+	}
+  return result.slice(0, result.length-1);
 };
 
 // 7. Compute the exponent of a number.
@@ -92,6 +108,14 @@ var powerOfTwo = function(n) {
 
 // 9. Write a function that reverses a string.
 var reverse = function(string) {
+	let result = '';
+	if(string.length === 1){
+		return string;
+	}
+	for(let i = string.length-1; i >= 0; i--){
+		result += reverse(string[i]);
+	}
+	return result;
 };
 
 // 10. Write a function that determines if a string is a palindrome.
@@ -177,11 +201,31 @@ var countKeysInObj = function(obj, key) {
 // countValuesInObj(obj, 'r') // 2
 // countValuesInObj(obj, 'e') // 1
 var countValuesInObj = function(obj, value) {
+	let counter = 0;
+  for(let key in obj){
+		if(obj[key] === value){
+			counter++;
+		}
+		if(typeof obj[key] === 'object'){
+			counter += countValuesInObj(obj[key], value);
+		}
+	}
+  return counter;
 };
 
 // 24. Find all keys in an object (and nested objects) by a provided name and rename
 // them to a provided new name while preserving the value stored at that key.
 var replaceKeysInObj = function(obj, oldKey, newKey) {
+  for(let key in obj){
+		if(key === oldKey){
+			obj[newKey] = obj[key];
+			delete obj[key];
+		}
+		if(typeof obj[key] === 'object'){
+			obj[key] = replaceKeysInObj(obj, oldKey, newKey);
+		}
+	}
+  return obj;
 };
 
 // 25. Get the first n Fibonacci numbers. In the Fibonacci sequence, each subsequent
